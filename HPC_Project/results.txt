@@ -1,4 +1,0 @@
-Original mandelbrot:
-g++ -o mandel mandelbrot.cpp
-Time elapsed: 115 seconds
-

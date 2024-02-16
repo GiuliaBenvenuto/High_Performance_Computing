@@ -16,6 +16,7 @@ int main(int argc, char **argv)
     
     MPI_Init(NULL, NULL); 
     int size, rank;
+
     MPI_Comm_size(MPI_COMM_WORLD, &size);
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 
@@ -25,6 +26,7 @@ int main(int argc, char **argv)
     double local_sum = 0.0;
     double global_sum = 0.0;
     long int start, end;
+
     if( rank == size-1 ){
         int remaind = INTERVALS % size;
         start = rank * local_interval + 1;
@@ -37,6 +39,7 @@ int main(int argc, char **argv)
 
     sum = 0.0;
     dx = 1.0 / (double) intervals;
+    
     start_hot = MPI_Wtime();
     for (i = start; i <= end; i++) {
         x = dx * ((double) (i - 0.5));
@@ -44,6 +47,7 @@ int main(int argc, char **argv)
         local_sum += f;
     }
     end_hot = MPI_Wtime();
+
     MPI_Reduce(&local_sum, &global_sum, 1, MPI_DOUBLE, MPI_SUM, 0, MPI_COMM_WORLD);
     if (rank == 0 ){
         pi = dx * global_sum;

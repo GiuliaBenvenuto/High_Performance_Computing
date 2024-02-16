@@ -22,7 +22,7 @@ int main(int argc, char* argv[]){
     int N = 40000;
 
     // Define the number of threads
-    // omp_set_num_threads(512);
+    omp_set_num_threads(32);
 
     printf("DFTW calculation with N = %d \n",N);
 

@@ -13,6 +13,8 @@ int main(int argc, char **argv)
     double time1, time2;
     long int i, intervals = INTERVALS;
     printf("Number of intervals: %ld\n", intervals);
+
+    
     MPI_Init(NULL, NULL); 
     int size, rank;
     MPI_Comm_size(MPI_COMM_WORLD, &size);

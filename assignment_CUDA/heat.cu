@@ -29,7 +29,7 @@ __global__ void step_kernel_mod(int ni, int nj, float fact, float* temp_in, floa
       // find indices into linear memory
       // for central point and neighbours
       int i = idx % (ni-2)+1;
-      int j = idx / (ni-2)+1;
+      int j = idx / (nj-2)+1;
 
       i00 = I2D(ni, i, j);
       im10 = I2D(ni, i-1, j);

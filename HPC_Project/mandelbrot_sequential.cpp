@@ -28,8 +28,8 @@ using namespace std;
 int main(int argc, char **argv)
 {
     int *const image = new int[HEIGHT * WIDTH];
-
     const auto start = chrono::steady_clock::now();
+
     for (int pos = 0; pos < HEIGHT * WIDTH; pos++)
     {
         image[pos] = 0;
@@ -52,6 +52,7 @@ int main(int argc, char **argv)
             }
         }
     }
+
     const auto end = chrono::steady_clock::now();
     cout << "Time elapsed: "
          << chrono::duration_cast<chrono::seconds>(end - start).count()

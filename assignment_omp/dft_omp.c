@@ -1,4 +1,3 @@
-
 #include "stdio.h" // printf
 #include "stdlib.h" // malloc and rand for instance. Rand not thread safe!
 #include "time.h"   // time(0) to get random seed
@@ -21,6 +20,10 @@ int main(int argc, char* argv[]){
 // size of input array
     // int N = 10000 original value
     int N = 40000;
+
+    // Define the number of threads
+    omp_set_num_threads(32);
+
     printf("DFTW calculation with N = %d \n",N);
 
     double* xr = (double*) malloc (N *sizeof(double));
@@ -72,15 +75,20 @@ int main(int argc, char* argv[]){
 int DFT(int idft, double* xr, double* xi, double* Xr_o, double* Xi_o, int N){
   int k, n;
 
-  #pragma omp parallel for schedule(dynamic) collapse(2) private(k,n) shared(Xr_o, Xi_o, xr, xi)
+  // #pragma omp parallel for schedule(static) 
+  // #pragma omp parallel for schedule(guided)
+  // #pragma omp parallel for schedule(dynamic)
+  // #pragma omp parallel for schedule(dynamic) collapse(2) private(k,n) shared(Xr_o, Xi_o, xr, xi)
+  #pragma omp parallel for schedule(dynamic) private(k,n) shared(Xr_o, Xi_o, xr, xi)
   for (k=0 ; k<N ; k++)
   {
+      // #pragma omp parallel for schedule(dynamic)
+      // #pragma omp parallel for schedule(static)
       for (n=0 ; n<N ; n++)  {
         // Real part of X[k]
           Xr_o[k] += xr[n] * cos(n * k * PI2 / N) + idft*xi[n]*sin(n * k * PI2 / N);
           // Imaginary part of X[k]
           Xi_o[k] += -idft*xr[n] * sin(n * k * PI2 / N) + xi[n] * cos(n * k * PI2 / N);
-
       }
   }
 

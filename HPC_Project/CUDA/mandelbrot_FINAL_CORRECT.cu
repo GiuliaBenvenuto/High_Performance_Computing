@@ -3,7 +3,6 @@
 #include <complex>
 #include <chrono>
 #include <cmath>
-//#include <cuda.h>
 #include "cuda_runtime.h"
 
 // Ranges of the set
@@ -69,7 +68,6 @@ int main(int argc, char **argv)
 
     // Timer
     cudaEvent_t  start, stop;
-
     cudaEventCreate( &start );
     cudaEventCreate( &stop );
 

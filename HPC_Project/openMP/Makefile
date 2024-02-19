@@ -3,8 +3,8 @@ CFLAGS = -diag-disable=10441 -Ofast -qopenmp
 
 all: mandelbrot_omp_mk
 
-mandelbrot_omp_mk: main.cpp
-	$(CC) $(CFLAGS) -o mandelbrot_omp_mk mandelbrot_makefile.cpp
+mandelbrot_omp_mk: mandelbrot_omp_makefile.cpp
+	$(CC) $(CFLAGS) -o mandelbrot_omp_mk mandelbrot_omp_makefile.cpp
 
 clean:
 	rm -f mandelbrot_omp_mk

@@ -4,7 +4,6 @@
 #include <chrono>
 #include <mpi.h>
 
-
 // Ranges of the set
 #define MIN_X -2
 #define MAX_X 1
@@ -41,33 +40,26 @@ int main(int argc, char **argv)
 
     remainder = (HEIGHT*WIDTH) % world_size;
 
-    //int *const image = new int[HEIGHT * WIDTH];
 
     int local_size = (HEIGHT*WIDTH) / world_size;
     int local_size_res;
     int* local_image = nullptr;
+
     int pos_start, pos_end;
-    //const auto start = chrono::steady_clock::now();
     if(rank == world_size - 1 && ((rank*local_size+local_size-1) < (HEIGHT*WIDTH) - 1)){
-        //cout << "Local size senza resto: " << local_size << endl;
-        //cout << "Quello da aggiungere: " << (local_size - ((HEIGHT*WIDTH) - rank * local_size)) << endl;
+
         local_size_res = (HEIGHT*WIDTH) - rank * local_size;
-        //cout << "Local size con resto: " << local_size_res << endl;
-        //cout << "Id Thread last: " << rank << endl;
         local_image = new int[local_size_res];
         pos_start = rank * local_size;
-        //cout << "Pos start: " << pos_start << endl;
         pos_end = (HEIGHT*WIDTH) - 1;
-        //cout << "True last elem: " << pos_end << endl;
-        //cout << "last elem of last block: " << rank * local_size + local_size_res - 1 << endl;
         local_size = local_size_res;
     }
     else{
         local_image = new int[local_size];
         pos_start = rank * local_size;      
         pos_end = pos_start + local_size - 1;
-        //cout << "Id Thread: " << pos_end << endl;
     }
+    
     start = MPI_Wtime();
     
 
@@ -97,7 +89,6 @@ int main(int argc, char **argv)
         j++;
     }
 
-    // cout << remainder;
 
     if(remainder==0){
         MPI_Gather(local_image, local_size, MPI_INT, image, local_size, MPI_INT, rec_id, MPI_COMM_WORLD);
@@ -123,19 +114,6 @@ int main(int argc, char **argv)
         end = MPI_Wtime();
     }
 
-
-    /*if(rank == rec_id){
-        //MPI_Gather(local_image, local_size, MPI_INT, image, local_size, MPI_INT, rec_id, MPI_COMM_WORLD);
-        end = MPI_Wtime();
-
-        cout << "Time elapsed: "
-            << (end - start)
-            << " seconds." << endl;
-    }
-    else{
-        MPI_Gather(local_image, local_size, MPI_INT, nullptr, 0, MPI_INT, rec_id, MPI_COMM_WORLD);
-    }
-    delete[] local_image;*/
     
 
     // Write the result to a file

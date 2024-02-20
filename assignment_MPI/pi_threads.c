@@ -3,7 +3,6 @@
 #include <mpi.h>
                
 #define PI25DT 3.141592653589793238462643
-
 #define INTERVALS 100000000000
 
 int main(int argc, char **argv)
@@ -52,12 +51,7 @@ int main(int argc, char **argv)
     if (rank == 0 ){
         pi = dx * global_sum;
         
-        //pi = dx*sum;
-
-        //time2 = (clock() - time1) / (double) CLOCKS_PER_SEC;
         time2 = MPI_Wtime();
-
-        
 
         printf("Computed PI %.24f\n", pi);
         printf("The true PI %.24f\n\n", PI25DT);

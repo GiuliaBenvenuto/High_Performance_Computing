@@ -1,7 +1,7 @@
 CC=nvc++
 # CFLAGS=-qopenmp
 TARGET=CUDA_mandelbrot
-SRC=mandelbrot_makefile.cu
+SRC=mandelbrot_CUDA_makefile.cu
 
 # Resolution
 RESOLUTION=1000 2000 4000

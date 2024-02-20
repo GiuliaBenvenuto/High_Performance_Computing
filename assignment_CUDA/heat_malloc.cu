@@ -19,13 +19,10 @@ __global__ void step_kernel_mod(int ni, int nj, float fact, float* temp_in, floa
 
   int i = blockIdx.x * blockDim.x + threadIdx.x; //global id of thread
   int stride = blockDim.x * gridDim.x;
-  //printf("threadId.x : %d \n", threadIdx.x);
-  //printf("threadId.x : %d stride : %d i : %d \n blockDim.x : %d \n blockId.x : %d \n blockId.y : %d \n gridDim.x : %d \n gridDim.y : %d \n", threadIdx.x, stride, i, blockDim.x, blockIdx.x, blockIdx.y, gridDim.x, gridDim.y);
 
 
   // loop over all points in domain (except boundary)
   for ( int idx=i; idx < (nj-2)*(ni-2); idx+=stride ) {
-    //for ( int i=1; i < ni-1; i++ ) {
       // find indices into linear memory
       // for central point and neighbours
       int i = idx % (ni-2)+1;
@@ -43,9 +40,7 @@ __global__ void step_kernel_mod(int ni, int nj, float fact, float* temp_in, floa
 
       // update temperatures
       temp_out[i00] = temp_in[i00]+fact*(d2tdx2 + d2tdy2);
-    //}
-  //}
-  }
+    }
 }
 
 void step_kernel_ref(int ni, int nj, float fact, float* temp_in, float* temp_out)
@@ -88,18 +83,11 @@ int main()
   float tfac = 8.418e-5; // thermal diffusivity of silver
 
   float *temp1_ref, *temp2_ref, *temp1, *temp2, *temp_tmp, *temp1_mod, *temp2_mod;  
-  // double *temp1_mod, *temp2_mod, *temp_tmpmod;
   const int size = ni * nj * sizeof(float);
-  // const int size_double = ni * nj * sizeof(double);
 
-
-  dim3 threads(256); //(16, 16);
+  dim3 threads(256);
   dim3 dimblock(((ni-ni/2)*(nj-nj/2)+ threads.x-1)/threads.x);
-
-  //dim3 block(32); //(16, 16);
-  //dim3 grid(((ni-ni/2)*(nj-nj/2)+ block.x-1)/block.x);//((ni + block.x - 1) / block.x, (nj + block.y - 1) / block.y);
   
-
   cudaEvent_t start, stop, start_ref, stop_ref;
   cudaEventCreate(&start);
   cudaEventCreate(&stop);
@@ -122,6 +110,7 @@ int main()
   cudaMemcpy(temp1_mod, temp1,  size, cudaMemcpyHostToDevice);
   cudaMemcpy(temp2_mod, temp2,  size, cudaMemcpyHostToDevice);
   
+
   // ---------- CPU ------------
   cudaEventRecord(start_ref, 0);
   // Execute the CPU-only reference version
@@ -134,13 +123,10 @@ int main()
     temp2_ref= temp_tmp;
   }
   cudaEventRecord(stop_ref, 0);
-  
-  cudaEventRecord(start, 0);
-
-
 
 
   // ------------ GPU ----------------
+  cudaEventRecord(start, 0);
   // Execute the modified version using same data
   for (istep=0; istep < nstep; istep++) {
     //step_kernel_mod(ni, nj, tfac, temp1, temp2);
@@ -151,7 +137,6 @@ int main()
     temp1_mod = temp2_mod;
     temp2_mod= temp_tmp;
   }
-
 
   cudaMemcpy(temp1, temp1_mod, size, cudaMemcpyDeviceToHost);
   cudaMemcpy(temp2, temp2_mod, size, cudaMemcpyDeviceToHost);
@@ -171,7 +156,6 @@ int main()
   float maxError = 0;
   // Output should always be stored in the temp1 and temp1_ref at this point
   for( int i = 0; i < ni*nj; ++i ) {
-    //if (abs(temp1[i]-temp1_ref[i]) > maxError) { maxError = abs(temp1[i]-temp1_ref[i]); }
     if (abs(temp1[i]-temp1_ref[i]) > maxError) { maxError = abs(temp1[i]-temp1_ref[i]); }
   }
 
@@ -181,9 +165,6 @@ int main()
   else
     printf("The Max Error of %.8f is within acceptable bounds.\n", maxError);
   
- 
-  
-
   
   cudaFree( temp1_mod );
   cudaFree( temp2_mod );

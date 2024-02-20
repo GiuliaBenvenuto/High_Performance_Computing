@@ -69,7 +69,6 @@ int main(int argc, char **argv)
         return -1;
     }
 
-    //const char* outputFile = argv[1];
     int resolution = atoi(argv[2]);
     int blockSize = atoi(argv[3]);
 

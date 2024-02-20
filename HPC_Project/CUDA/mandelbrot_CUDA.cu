@@ -31,12 +31,10 @@ using namespace std;
 
 __global__ void mandelbrotGPUfunction(int *image, double step, double minX, double minY, int width, int height, int iterations)
 {
-    // 
     int pos = blockIdx.x * blockDim.x + threadIdx.x;
     if (pos < width * height) {
-        //
+
         image[pos] = 0;
-        //
         const int row = pos / width;
         const int col = pos % width;
 
@@ -79,7 +77,7 @@ int main(int argc, char **argv)
     dim3 block(1024); // threads per block 
     dim3 grid((WIDTH * HEIGHT + block.x - 1) / block.x);
     
-     // Start timer
+    // Start timer
     cudaEventRecord(start);
 
     // Function call

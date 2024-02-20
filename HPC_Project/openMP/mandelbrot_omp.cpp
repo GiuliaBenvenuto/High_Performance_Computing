@@ -30,11 +30,11 @@ using namespace std;
 
 int main(int argc, char **argv)
 {
-    // Set the number of threads to use in this region 
+    // Set the number of threads to use in the parallelized region 
     const int n_threads = 512;
     omp_set_num_threads(n_threads);
     
-    int *const image = new int[HEIGHT * WIDTH]; //6.000.000 
+    int *const image = new int[HEIGHT * WIDTH];  
 
     const auto start = chrono::steady_clock::now();
 
@@ -53,7 +53,6 @@ int main(int argc, char **argv)
     #pragma omp parallel for
     for (int pos = 0; pos < HEIGHT * WIDTH; pos++)
     {
-
         image[pos] = 0;
 
         const int row = pos / WIDTH;
@@ -64,7 +63,6 @@ int main(int argc, char **argv)
         complex<double> z(0, 0);
         for (int i = 1; i <= ITERATIONS; i++) // Potentially the most intensive part 
         {
-            // done ITERATIONS * image = 1000 * 6.000.000 in the worst case 
             // Operation on complex numbers -> intensive 
             z = pow(z, 2) + c;
 

@@ -55,6 +55,7 @@ int main(int argc, char **argv)
         local_size = local_size_res;
     }
     else{
+
         local_image = new int[local_size];
         pos_start = rank * local_size;      
         pos_end = pos_start + local_size - 1;
@@ -64,7 +65,6 @@ int main(int argc, char **argv)
     
 
     int j=0;
-    
     for (int pos = pos_start; pos <= pos_end; pos++)
     {
         local_image[j] = 0;
@@ -95,7 +95,7 @@ int main(int argc, char **argv)
         end = MPI_Wtime();
     }
     else{
-        int* counts; //dimensioni bloocchi dei processi
+        int* counts; 
         int* displacements;
         if(rank==rec_id){
             counts = new int[world_size];
@@ -119,11 +119,6 @@ int main(int argc, char **argv)
     // Write the result to a file
     ofstream matrix_out;
     if(rank == rec_id){
-        /*const auto end = chrono::steady_clock::now();
-        cout << "Time elapsed: "
-            << chrono::duration_cast<chrono::seconds>(end - start).count()
-            << " seconds." << endl;
-        */
         if (argc < 2)
         {
             cout << "Please specify the output file as a parameter." << endl;

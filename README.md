@@ -12,7 +12,7 @@ The second assignment shifts focus to CUDA (Compute Unified Device Architecture)
 ### Homework 3: Parallelization with MPI
 The third assignment involves the Message Passing Interface (MPI). MPI is a standardized and portable message-passing system designed to function on a wide variety of parallel computers. In this assignment, students are tasked with parallelizing code using MPI, demonstrating an understanding of distributed memory computing by using the INFN institute cluster.
 
-## Main Project: Mandelbrot Set Parallelization
+## Main Project: Mandelbrot Set Parallelization
 The centerpiece of this repository is the main project, which involves the parallelization of the Mandelbrot set generation algorithm. The Mandelbrot set is a complex and fascinating fractal, and generating it can be computationally intensive. This project aims to explore and implement parallelization of the Mandelbrot set algorithm using three different approaches:
 
 - OpenMP: Implementing a shared-memory parallel version of the Mandelbrot set algorithm.
